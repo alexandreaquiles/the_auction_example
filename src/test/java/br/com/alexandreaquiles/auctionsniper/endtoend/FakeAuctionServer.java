@@ -1,6 +1,9 @@
 package br.com.alexandreaquiles.auctionsniper.endtoend;
 
 public class FakeAuctionServer {
+	
+	protected static final String XMPP_HOSTNAME = null;
+
 
 	public FakeAuctionServer(String auction) {
 	}
@@ -17,7 +20,7 @@ public class FakeAuctionServer {
 	public void stop() {
 	}
 
-	public Object getItemId() {
+	public String getItemId() {
 		return null;
 	}
 
