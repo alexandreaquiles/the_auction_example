@@ -40,6 +40,11 @@
 		<version>r268</version>
 	    <scope>test</scope>
 	</dependency>
+	<dependency>
+		<groupId>jivesoftware</groupId>
+		<artifactId>smack</artifactId>
+		<version>3.1.0</version>
+	</dependency>
   </dependencies>
   
   <build>
