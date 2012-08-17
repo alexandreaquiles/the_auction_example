@@ -21,7 +21,25 @@
       <artifactId>junit</artifactId>
       <version>4.10</version>
       <scope>test</scope>
+      <exclusions>
+      	<exclusion>
+      		<groupId>org.hamcrest</groupId>
+      		<artifactId>hamcrest-core</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
+    <dependency>
+		<groupId>com.googlecode.windowlicker</groupId>
+		<artifactId>windowlicker-core</artifactId>
+		<version>r268</version>
+	    <scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>com.googlecode.windowlicker</groupId>
+		<artifactId>windowlicker-swing</artifactId>
+		<version>r268</version>
+	    <scope>test</scope>
+	</dependency>
   </dependencies>
   
   <build>
