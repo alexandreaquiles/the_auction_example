@@ -17,4 +17,8 @@ public class FakeAuctionServer {
 	public void stop() {
 	}
 
+	public Object getItemId() {
+		return null;
+	}
+
 }
