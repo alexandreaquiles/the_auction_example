@@ -3,7 +3,7 @@ package endtoend;
 import org.junit.After;
 import org.junit.Test;
 
-public class AuctionSniperEndToEndItCase {
+public class AuctionSniperEndToEndITCase {
 	private final FakeAuctionServer auction = new FakeAuctionServer("item-54321");
 	private final ApplicationRunner application = new ApplicationRunner();
 	
