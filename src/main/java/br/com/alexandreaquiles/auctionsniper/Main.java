@@ -62,7 +62,7 @@ public class Main {
 			}
 		);
 		notToBeGCD = chat;
-		chat.sendMessage(new Message());
+		chat.sendMessage(JOIN_COMMAND_FORMAT);
 	}
 
 	private String auctionId(XMPPConnection connection, String itemId) {
