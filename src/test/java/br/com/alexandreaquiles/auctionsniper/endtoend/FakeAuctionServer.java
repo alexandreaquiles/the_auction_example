@@ -20,8 +20,8 @@ public class FakeAuctionServer {
 	public static final String XMPP_HOSTNAME = "localhost";
 
 	private static final String ITEM_ID_AS_LOGIN = "auction-%s";
-	private static final String AUCTION_PASSWORD = "auction";
 	private static final String AUCTION_RESOURCE = "Auction";
+	private static final String AUCTION_PASSWORD = "auction";
 
 	private final SingleMessageListener messageListener = new SingleMessageListener();
 	
