@@ -13,7 +13,7 @@ import org.jivesoftware.smack.packet.Message;
 
 import br.com.alexandreaquiles.auctionsniper.ui.MainWindow;
 
-public class Main {
+public class Main implements AuctionEventListener {
 	
 	private static final int ARG_HOSTNAME = 0;
 	private static final int ARG_USERNAME = 1;
@@ -54,16 +54,8 @@ public class Main {
 		disconnectWhenUICloses(connection);
 		String auctionId = auctionId(connection, itemId);
 		Chat chat = connection.getChatManager().createChat(
-			auctionId, 
-			new MessageListener() {
-				public void processMessage(Chat aChat, Message message) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							ui.showStatus(MainWindow.STATUS_LOST);
-						}
-					});
-				}
-			}
+			auctionId,
+			new AuctionMessageTranslator(this)
 		);
 		notToBeGCD = chat;
 		chat.sendMessage(JOIN_COMMAND_FORMAT);
@@ -86,6 +78,14 @@ public class Main {
 		connection.connect();
 		connection.login(username, password, AUCTION_RESOURCE);
 		return connection;
+	}
+
+	public void auctionClosed() {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				ui.showStatus(MainWindow.STATUS_LOST);
+			}
+		});
 	}
 
 }
