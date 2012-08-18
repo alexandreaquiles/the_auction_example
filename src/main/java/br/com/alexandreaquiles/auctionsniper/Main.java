@@ -22,7 +22,10 @@ public class Main {
 	
 	
 	private MainWindow ui;
-	private Chat notToBeGCD; 
+	private Chat notToBeGCD;
+	public static final String PRICE_COMMAND_FORMAT = "SOLVersion: 1.1; Event: PRICE; CurrentPrice: %d; Increment: %d; Bidder: %s;";
+	public static final String JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Event: JOIN;";
+	public static final String BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: BID; Price: %d"; 
 	
 	public Main() throws Exception {
 		startUserInterface();
