@@ -1,6 +1,6 @@
 package br.com.alexandreaquiles.auctionsniper;
 
-public class AuctionSniper {
+public class AuctionSniper implements AuctionEventListener {
 
 	private SniperListener sniperListener;
 
@@ -9,6 +9,12 @@ public class AuctionSniper {
 	}
 
 	public void auctionClosed() {
+		sniperListener.sniperLost();
+	}
+
+	@Override
+	public void currentPrice(int price, int increment) {
+		
 	}
 
 }
