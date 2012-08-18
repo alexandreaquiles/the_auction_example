@@ -31,5 +31,17 @@ public class AuctionMessageTranslatorTest {
 		
 		translator.processMessage(UNUSED_CHAT, message);
 	}
+	
+	@Test
+	public void notifiesBidDetailsWhenCurrentPriceMessageIsReceveid(){
+		context.checking(new Expectations(){{
+			exactly(1).of(listener).currentPrice(192, 7);
+		}});
+
+		Message message = new Message();
+		message.setBody("SOLVerion: 1.1; Event: PRICE; CurrentPrice: 192; Increment: 7; Bidder: Someone else;");
+		
+		translator.processMessage(UNUSED_CHAT, message);
+	}
 
 }
