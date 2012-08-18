@@ -57,6 +57,7 @@ public class Main {
 			auctionId, 
 			new MessageListener() {
 				public void processMessage(Chat aChat, Message message) {
+					System.out.println(message.getBody());
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
 							ui.showStatus(MainWindow.STATUS_LOST);
