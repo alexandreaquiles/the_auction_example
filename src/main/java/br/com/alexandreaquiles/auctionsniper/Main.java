@@ -21,7 +21,8 @@ public class Main {
 	private static final String AUCTION_ID_FORMAT = "auction-%s@%s/"+AUCTION_RESOURCE;
 	
 	
-	protected MainWindow ui;
+	private MainWindow ui;
+	private Chat notToBeGCD; 
 	
 	public Main() throws Exception {
 		startUserInterface();
@@ -38,17 +39,34 @@ public class Main {
 
 	public static void main(String... args) throws Exception {
 		Main main = new Main();
-		XMPPConnection connection = connectTo(args[ARG_HOSTNAME], args[ARG_USERNAME], args[ARG_PASSWORD]);
-		String auctionId = String.format(AUCTION_ID_FORMAT, args[ARG_ITEM_ID], connection.getServiceName());
-		Chat chat = connection.getChatManager().createChat(auctionId, new MessageListener() {
-			public void processMessage(Chat chat, Message message) {
-				
+		main.joinAuction(
+			connection(args[ARG_HOSTNAME], args[ARG_USERNAME], args[ARG_PASSWORD]), 
+			args[ARG_ITEM_ID]);
+	}
+
+	private void joinAuction(XMPPConnection connection, String itemId) throws XMPPException {
+		String auctionId = auctionId(connection, itemId);
+		Chat chat = connection.getChatManager().createChat(
+			auctionId, 
+			new MessageListener() {
+				public void processMessage(Chat aChat, Message message) {
+					SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
+							ui.showStatus(MainWindow.STATUS_LOST);
+						}
+					});
+				}
 			}
-		});
+		);
+		notToBeGCD = chat;
 		chat.sendMessage(new Message());
 	}
 
-	private static XMPPConnection connectTo(String hostname, String username, String password) throws XMPPException {
+	private String auctionId(XMPPConnection connection, String itemId) {
+		return String.format(AUCTION_ID_FORMAT, itemId, connection.getServiceName());
+	}
+
+	private static XMPPConnection connection(String hostname, String username, String password) throws XMPPException {
 		XMPPConnection connection = new XMPPConnection(hostname);
 		connection.connect();
 		connection.login(username, password, AUCTION_RESOURCE);
