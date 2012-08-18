@@ -1,14 +1,13 @@
 package br.com.alexandreaquiles.auctionsniper.endtoend;
 
 import br.com.alexandreaquiles.auctionsniper.Main;
-import static br.com.alexandreaquiles.auctionsniper.endtoend.FakeAuctionServer.XMPP_HOSTNAME;
+import br.com.alexandreaquiles.auctionsniper.ui.MainWindow;
 
 public class ApplicationRunner {
 	
 	public static final String SNIPER_ID = "sniper";
 	public static final String SNIPER_PASSWORD = "sniper";
-	private static final String STATUS_JOINING = null;
-	private static final String STATUS_LOST = null;
+
 	private AuctionSniperDriver driver;
 
 	public void startBiddingIn(final FakeAuctionServer auction) {
@@ -26,12 +25,12 @@ public class ApplicationRunner {
 		thread.start();
 		
 		driver = new AuctionSniperDriver(1000);
-		driver.showsSniperStatus(STATUS_JOINING);
+		driver.showsSniperStatus(MainWindow.STATUS_JOINING);
 		
 	}
 
 	public void showsSniperHasLostAuction() {
-		driver.showsSniperStatus(STATUS_LOST);
+		driver.showsSniperStatus(MainWindow.STATUS_LOST);
 	}
 
 	public void stop() {
