@@ -1,4 +1,4 @@
-package br.com.alexandreaquiles.auctionsniper.endtoend;
+package endtoend;
 
 import org.junit.After;
 import org.junit.Test;

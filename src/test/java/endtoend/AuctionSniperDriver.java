@@ -1,4 +1,4 @@
-package br.com.alexandreaquiles.auctionsniper.endtoend;
+package endtoend;
 
 import br.com.alexandreaquiles.auctionsniper.Main;
 import br.com.alexandreaquiles.auctionsniper.ui.MainWindow;
