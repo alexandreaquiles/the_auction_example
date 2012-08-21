@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import br.com.alexandreaquiles.auctionsniper.Auction;
+import br.com.alexandreaquiles.auctionsniper.AuctionEventListener.PriceSource;
 import br.com.alexandreaquiles.auctionsniper.AuctionSniper;
 import br.com.alexandreaquiles.auctionsniper.SniperListener;
 
@@ -37,7 +38,16 @@ public class AuctionSniperTest {
 			atLeast(1).of(sniperListener).sniperBidding();
 		}});
 		
-		sniper.currentPrice(price, increment);
+		sniper.currentPrice(price, increment, PriceSource.FromOtherBidder);
+	}
+	
+	@Test
+	public void reportsIsWinningWhenCurrentPricesComesFromSniper(){
+		context.checking(new Expectations(){{
+			atLeast(1).of(sniperListener).sniperWinning();
+		}});
+		
+		sniper.currentPrice(123, 45, PriceSource.FromSniper);
 	}
 
 }

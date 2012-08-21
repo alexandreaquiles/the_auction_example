@@ -91,6 +91,10 @@ public class Main {
 			showStatus(MainWindow.STATUS_BIDDING);
 		}
 
+		public void sniperWinning() {
+			showStatus(MainWindow.STATUS_WINNING);
+		}
+
 		private void showStatus(final String status) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
@@ -98,7 +102,7 @@ public class Main {
 				}
 			});
 		}
-		
+
 	}
 
 }

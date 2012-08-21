@@ -7,6 +7,8 @@ import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
 
 public class MainWindow extends JFrame {
+	private static final long serialVersionUID = 1L;
+
 	public static final String MAIN_WINDOW_NAME = "Auction Sniper Main";
 	public static final String SNIPER_STATUS_NAME = "sniper status";
 	

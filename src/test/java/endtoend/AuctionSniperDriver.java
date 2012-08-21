@@ -1,14 +1,14 @@
 package endtoend;
 
-import br.com.alexandreaquiles.auctionsniper.Main;
+import static org.hamcrest.core.IsEqual.equalTo;
 import br.com.alexandreaquiles.auctionsniper.ui.MainWindow;
 
 import com.objogate.wl.swing.AWTEventQueueProber;
 import com.objogate.wl.swing.driver.JFrameDriver;
 import com.objogate.wl.swing.driver.JLabelDriver;
 import com.objogate.wl.swing.gesture.GesturePerformer;
-import static org.hamcrest.core.IsEqual.equalTo;
 
+@SuppressWarnings("unchecked")
 public class AuctionSniperDriver extends JFrameDriver {
 
 	public AuctionSniperDriver(int timeoutInMillis) {
