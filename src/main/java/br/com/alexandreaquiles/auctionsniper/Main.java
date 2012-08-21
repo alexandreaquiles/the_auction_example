@@ -87,6 +87,10 @@ public class Main {
 			showStatus(MainWindow.STATUS_LOST);
 		}
 
+		public void sniperWon() {
+			showStatus(MainWindow.STATUS_WON);
+		}
+
 		public void sniperBidding() {
 			showStatus(MainWindow.STATUS_BIDDING);
 		}
