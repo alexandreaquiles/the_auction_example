@@ -30,10 +30,6 @@ public class ApplicationRunner {
 		
 	}
 
-	public void showsSniperHasLostAuction() {
-		driver.showsSniperStatus(MainWindow.STATUS_LOST);
-	}
-
 	public void stop() {
 		if(driver != null){
 			driver.dispose();
@@ -45,9 +41,15 @@ public class ApplicationRunner {
 	}
 
 	public void hasShownSniperIsWinning() {
+		driver.showsSniperStatus(MainWindow.STATUS_WINNING);
+	}
+
+	public void showsSniperHasLostAuction() {
+		driver.showsSniperStatus(MainWindow.STATUS_LOST);
 	}
 
 	public void showsSniperHasWonAuction() {
+		driver.showsSniperStatus(MainWindow.STATUS_WON);
 	}
 
 }
