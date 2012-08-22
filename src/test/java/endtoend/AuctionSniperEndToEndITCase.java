@@ -24,7 +24,7 @@ public class AuctionSniperEndToEndITCase {
 		auction.hasReceivedJoinRequestFrom(ApplicationRunner.SNIPER_XMPP_ID);
 		
 		auction.reportPrice(1000, 98, "other bidder");
-		application.hasShownSniperIsBidding();
+		application.hasShownSniperIsBidding(1000, 1098); //last price, last bid
 		
 		auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID);
 		
@@ -39,15 +39,15 @@ public class AuctionSniperEndToEndITCase {
 		auction.hasReceivedJoinRequestFrom(ApplicationRunner.SNIPER_XMPP_ID);
 		
 		auction.reportPrice(1000, 98, "other bidder");
-		application.hasShownSniperIsBidding();
+		application.hasShownSniperIsBidding(1000, 1098); //last price, last bid
 		
 		auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID);
 		
 		auction.reportPrice(1098, 97, ApplicationRunner.SNIPER_XMPP_ID);
-		application.hasShownSniperIsWinning();
+		application.hasShownSniperIsWinning(1098); //winning bid
 		
 		auction.announceClosed();
-		application.showsSniperHasWonAuction();
+		application.showsSniperHasWonAuction(1098); //last price
 		
 	}
 	
