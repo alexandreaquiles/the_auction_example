@@ -2,9 +2,9 @@ package br.com.alexandreaquiles.auctionsniper;
 
 public class SniperState {
 
-	private final String itemId;
-	private final int lastPrice;
-	private final int lastBid;
+	public final String itemId;
+	public int lastPrice;
+	public final int lastBid;
 
 	public SniperState(String itemId, int lastPrice, int lastBid) {
 		this.itemId = itemId;
