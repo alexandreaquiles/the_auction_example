@@ -10,6 +10,7 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 
 import br.com.alexandreaquiles.auctionsniper.ui.MainWindow;
+import br.com.alexandreaquiles.auctionsniper.ui.SnipersTableModel;
 
 public class Main {
 	
@@ -22,6 +23,7 @@ public class Main {
 	private static final String AUCTION_ID_FORMAT = "auction-%s@%s/"+AUCTION_RESOURCE;
 	
 	
+	private final SnipersTableModel snipers = new SnipersTableModel();
 	private MainWindow ui;
 	private Chat notToBeGCD;
 	public static final String PRICE_COMMAND_FORMAT = "SOLVersion: 1.1; Event: PRICE; CurrentPrice: %d; Increment: %d; Bidder: %s;";
@@ -36,7 +38,7 @@ public class Main {
 	private void startUserInterface() throws Exception {
 		SwingUtilities.invokeAndWait(new Runnable() {
 			public void run() {
-				ui = new MainWindow();
+				ui = new MainWindow(snipers);
 			}
 		});
 		
@@ -57,7 +59,7 @@ public class Main {
 
 		Auction auction = new XMPPAuction(chat);
 
-		chat.addMessageListener(new AuctionMessageTranslator(connection.getUser(), new AuctionSniper(itemId, auction, new SniperStateDisplayer())));
+		chat.addMessageListener(new AuctionMessageTranslator(connection.getUser(), new AuctionSniper(itemId, auction, new SwingThreadSniperListener(snipers))));
 		
 		auction.join();
 	}
@@ -79,18 +81,6 @@ public class Main {
 		connection.connect();
 		connection.login(username, password, AUCTION_RESOURCE);
 		return connection;
-	}
-	
-	public class SniperStateDisplayer implements SniperListener {
-
-		public void sniperStateChanged(final SniperSnapshot state) {
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					ui.sniperStatusChanged(state, MainWindow.STATUS_BIDDING);
-				}
-			});
-		}
-
 	}
 
 }

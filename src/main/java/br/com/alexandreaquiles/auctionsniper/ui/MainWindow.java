@@ -7,8 +7,6 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import br.com.alexandreaquiles.auctionsniper.SniperSnapshot;
-
 public class MainWindow extends JFrame {
 	private static final String APPLICATION_TITLE = "Auction Sniper";
 
@@ -24,10 +22,11 @@ public class MainWindow extends JFrame {
 	public static final String STATUS_LOST = "Lost";
 	public static final String STATUS_WON = "Won";
 	
-	private final SnipersTableModel snipers = new SnipersTableModel();
+	private final SnipersTableModel snipers;
 
-	public MainWindow() {
+	public MainWindow(SnipersTableModel snipers) {
 		super(APPLICATION_TITLE);
+		this.snipers = snipers;
 		setName(MAIN_WINDOW_NAME);
 		fillContentPane(makeSnipersTable());
 		pack();
@@ -46,10 +45,6 @@ public class MainWindow extends JFrame {
 		final JTable snipersTable = new JTable(snipers);
 		snipersTable.setName(SNIPER_TABLE_NAME);
 		return snipersTable;
-	}
-
-	public void sniperStatusChanged(SniperSnapshot state, String statusText) {
-		snipers.sniperStatusChanged(state);
 	}
 
 }
