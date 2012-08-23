@@ -2,6 +2,8 @@ package br.com.alexandreaquiles.auctionsniper.ui;
 
 import javax.swing.table.AbstractTableModel;
 
+import br.com.alexandreaquiles.auctionsniper.SniperState;
+
 
 public class SnipersTableModel extends AbstractTableModel {
 
@@ -24,6 +26,9 @@ public class SnipersTableModel extends AbstractTableModel {
 	public void setStatusText(String newStatusText) {
 		statusText = newStatusText;
 		fireTableRowsUpdated(0, 0);
+	}
+
+	public void sniperStatusChanged(SniperState state, String statusText) {
 	}
 
 }

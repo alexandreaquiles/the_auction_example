@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import br.com.alexandreaquiles.auctionsniper.SniperState;
+
 public class MainWindow extends JFrame {
 	private static final String APPLICATION_TITLE = "Auction Sniper";
 
@@ -48,6 +50,11 @@ public class MainWindow extends JFrame {
 
 	public void showStatus(String statusText) {
 		snipers.setStatusText(statusText);
+	}
+
+	public void sniperStatusChanged(SniperState state, String statusText) {
+		snipers.sniperStatusChanged(state, statusText);
+		
 	}
 
 }
