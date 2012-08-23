@@ -12,7 +12,7 @@ public class SnipersTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 
 	private final static SniperSnapshot STARTING_UP = new SniperSnapshot("", 0, 0, SniperState.JOINING);
-	private final static String[] STATUS_TEXT = { MainWindow.STATUS_JOINING, MainWindow.STATUS_BIDDING };
+	private final static String[] STATUS_TEXT = { MainWindow.STATUS_JOINING, MainWindow.STATUS_BIDDING, MainWindow.STATUS_WINNING };
 	
 	private String statusText = MainWindow.STATUS_JOINING;
 	private SniperSnapshot sniperSnapshot = STARTING_UP;
