@@ -24,18 +24,7 @@ public class SnipersTableModel extends AbstractTableModel {
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		switch(Column.at(columnIndex)){
-		case ITEM_IDENTIFIER:
-			return sniperSnapshot.itemId;
-		case LAST_PRICE:
-			return sniperSnapshot.lastPrice;
-		case LAST_BID:
-			return sniperSnapshot.lastBid;
-		case SNIPER_STATE:
-			return textFor(sniperSnapshot.state);
-		default:
-			throw new IllegalArgumentException("No column at " + columnIndex);
-		}
+		return Column.at(columnIndex).valueIn(sniperSnapshot);
 	}
 
 	public void sniperStatusChanged(SniperSnapshot newSnapshot) {
@@ -43,7 +32,7 @@ public class SnipersTableModel extends AbstractTableModel {
 		fireTableRowsUpdated(0, 0);
 	}
 
-	private String textFor(SniperState state) {
+	public static String textFor(SniperState state) {
 		return STATUS_TEXT[state.ordinal()];
 	}
 
