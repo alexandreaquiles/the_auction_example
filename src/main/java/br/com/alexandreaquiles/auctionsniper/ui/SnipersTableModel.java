@@ -8,15 +8,18 @@ import br.com.alexandreaquiles.auctionsniper.SniperState;
 public class SnipersTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
+
+	private final static SniperState STARTING_UP = new SniperState("", 0, 0);
 	
 	private String statusText = MainWindow.STATUS_JOINING;
+	private SniperState sniperState = STARTING_UP;
 
 	public int getRowCount() {
 		return 1;
 	}
 
 	public int getColumnCount() {
-		return 1;
+		return Column.values().length;
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
