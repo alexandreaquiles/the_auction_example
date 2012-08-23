@@ -2,12 +2,16 @@ package endtoend;
 
 import static com.objogate.wl.swing.matcher.IterableComponentsMatcher.matching;
 import static com.objogate.wl.swing.matcher.JLabelTextMatcher.withLabelText;
-import static org.hamcrest.Matchers.equalTo;
+
+import javax.swing.table.JTableHeader;
+
+import br.com.alexandreaquiles.auctionsniper.ui.Column;
 import br.com.alexandreaquiles.auctionsniper.ui.MainWindow;
 
 import com.objogate.wl.swing.AWTEventQueueProber;
 import com.objogate.wl.swing.driver.JFrameDriver;
 import com.objogate.wl.swing.driver.JTableDriver;
+import com.objogate.wl.swing.driver.JTableHeaderDriver;
 import com.objogate.wl.swing.gesture.GesturePerformer;
 
 @SuppressWarnings("unchecked")
@@ -20,16 +24,19 @@ public class AuctionSniperDriver extends JFrameDriver {
 			new AWTEventQueueProber(timeoutInMillis, 100));
 	}
 	
-	public void showsSniperStatus(String statusText){
-		new JTableDriver(this).hasCell(withLabelText(equalTo(statusText)));
-	}
-
 	public void showsSniperStatus(String itemId, int lastPrice, int lastBid, String statusText) {
 		JTableDriver table = new JTableDriver(this);
 		table.hasRow(
 			matching(withLabelText(itemId), withLabelText(String.valueOf(lastPrice)),
 			withLabelText(String.valueOf(lastBid)), withLabelText(statusText))
 		);
+		
+	}
+
+	public void hasColumnTitles() {
+		JTableHeaderDriver headers = new JTableHeaderDriver(this, JTableHeader.class);
+		headers.hasHeaders(matching(withLabelText(Column.ITEM_IDENTIFIER.name), withLabelText(Column.LAST_PRICE.name),
+									withLabelText(Column.LAST_BID.name), withLabelText(Column.SNIPER_STATE.name)));
 		
 	}
 

@@ -10,11 +10,11 @@ import br.com.alexandreaquiles.auctionsniper.SniperState;
 public class SnipersTableModel extends AbstractTableModel implements SniperListener {
 
 	private static final long serialVersionUID = 1L;
-
-	private final static SniperSnapshot STARTING_UP = new SniperSnapshot("", 0, 0, SniperState.JOINING);
 	private final static String[] STATUS_TEXT = { "Joining", "Bidding", "Winning", "Lost", "Won" };
+
+	public final static SniperSnapshot JOINING = new SniperSnapshot("", 0, 0, SniperState.JOINING);
 	
-	private SniperSnapshot sniperSnapshot = STARTING_UP;
+	private SniperSnapshot sniperSnapshot = JOINING;
 
 	public int getRowCount() {
 		return 1;
@@ -28,6 +28,10 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
 		return Column.at(columnIndex).valueIn(sniperSnapshot);
 	}
 
+	public String getColumnName(int columnIndex) {
+		return Column.at(columnIndex).name;
+	}
+	
 	public void sniperStateChanged(SniperSnapshot newSnapshot) {
 		this.sniperSnapshot = newSnapshot;
 		fireTableRowsUpdated(0, 0);

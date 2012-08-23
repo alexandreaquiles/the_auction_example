@@ -14,7 +14,7 @@ public class AuctionSniperEndToEndITCase {
 		auction.hasReceivedJoinRequestFrom(ApplicationRunner.SNIPER_XMPP_ID);
 		
 		auction.announceClosed();
-		application.showsSniperHasLostAuction();
+		application.showsSniperHasLostAuction(0, 0);
 	}
 	
 	@Test public void sniperMakesAHigherBidButLoses() throws Exception{
@@ -29,7 +29,7 @@ public class AuctionSniperEndToEndITCase {
 		auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID);
 		
 		auction.announceClosed();
-		application.showsSniperHasLostAuction();
+		application.showsSniperHasLostAuction(1000, 1098);
 	}
 	
 	@Test public void sniperWinsAnAuctionByBiddingHigher() throws Exception{
