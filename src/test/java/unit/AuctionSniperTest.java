@@ -11,6 +11,7 @@ import br.com.alexandreaquiles.auctionsniper.Auction;
 import br.com.alexandreaquiles.auctionsniper.AuctionEventListener.PriceSource;
 import br.com.alexandreaquiles.auctionsniper.AuctionSniper;
 import br.com.alexandreaquiles.auctionsniper.SniperListener;
+import br.com.alexandreaquiles.auctionsniper.SniperSnapshot;
 import br.com.alexandreaquiles.auctionsniper.SniperState;
 
 @RunWith(JMock.class)
@@ -37,7 +38,7 @@ public class AuctionSniperTest {
 	public void reportsLostIfAuctionClosesWhenBidding(){
 		context.checking(new Expectations(){{
 			ignoring(auction);
-			allowing(sniperListener).sniperBidding(with(any(SniperState.class)));
+			allowing(sniperListener).sniperStateChanged(with(any(SniperSnapshot.class)));
 									then(sniperState.is("bidding"));
 			atLeast(1).of(sniperListener).sniperLost();
 									when(sniperState.is("bidding"));
@@ -69,7 +70,7 @@ public class AuctionSniperTest {
 		context.checking(new Expectations(){{
 			int bid = price + increment;
 			one(auction).bid(bid);
-			atLeast(1).of(sniperListener).sniperBidding(new SniperState(ITEM_ID, price, bid));
+			atLeast(1).of(sniperListener).sniperStateChanged(new SniperSnapshot(ITEM_ID, price, bid, SniperState.BIDDING));
 		}});
 		
 		sniper.currentPrice(price, increment, PriceSource.FromOtherBidder);

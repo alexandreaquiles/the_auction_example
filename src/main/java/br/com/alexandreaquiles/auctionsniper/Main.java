@@ -91,7 +91,7 @@ public class Main {
 			showStatus(MainWindow.STATUS_WON);
 		}
 
-		public void sniperBidding(final SniperState state) {
+		public void sniperStateChanged(final SniperSnapshot state) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					ui.sniperStatusChanged(state, MainWindow.STATUS_BIDDING);
