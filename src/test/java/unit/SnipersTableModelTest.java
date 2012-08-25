@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import br.com.alexandreaquiles.auctionsniper.Defect;
 import br.com.alexandreaquiles.auctionsniper.SniperSnapshot;
 import br.com.alexandreaquiles.auctionsniper.ui.Column;
 import br.com.alexandreaquiles.auctionsniper.ui.SnipersTableModel;
@@ -59,7 +60,8 @@ public class SnipersTableModelTest {
 		}
 	}
 	
-	@Test public void notifiesListenersWhenAddingASniper(){
+	@Test 
+	public void notifiesListenersWhenAddingASniper(){
 		SniperSnapshot joining = SniperSnapshot.joining("item-id");
 		context.checking(new Expectations(){{
 			one(listener).tableChanged(with(anInsertionAtRow(0)));
@@ -73,10 +75,52 @@ public class SnipersTableModelTest {
 		assertRowMatchesSnapshot(0, joining);
 	}
 	
+	@Test 
+	public void holdsSnipersInAdditionOrder(){
+		context.checking(new Expectations(){{
+			ignoring(listener);
+		}});
+		
+		model.addSniper(SniperSnapshot.joining("item 0"));
+		model.addSniper(SniperSnapshot.joining("item 1"));
+		
+		assertEquals("item 0", cellValue(0, Column.ITEM_IDENTIFIER));
+		assertEquals("item 1", cellValue(1, Column.ITEM_IDENTIFIER));
+	}
+	
+
+	@Test
+	public void updatesCorrectRowForSniper(){
+		context.checking(new Expectations(){{
+			ignoring(listener);
+		}});
+		
+		SniperSnapshot joiningItem0 = SniperSnapshot.joining("item 0");
+		model.addSniper(joiningItem0);
+		SniperSnapshot joiningItem1 = SniperSnapshot.joining("item 1");
+		model.addSniper(joiningItem1);
+		
+		SniperSnapshot biddingItem0 = joiningItem0.bidding(555, 666);
+		
+		model.sniperStateChanged(biddingItem0);
+
+		assertRowMatchesSnapshot(0, biddingItem0);
+		assertRowMatchesSnapshot(1, joiningItem1);
+	}
+
+	@Test(expected=Defect.class)
+	public void throwsDefectIfNoExistingSniperForAnUpdate(){
+		model.sniperStateChanged(SniperSnapshot.joining("item 2").winning(555));
+	}
+
 	private void assertRowMatchesSnapshot(int row, SniperSnapshot snapshot) {
 		for (Column column : Column.values()) {
-			assertEquals(column.valueIn(snapshot), model.getValueAt(row, column.ordinal()));
+			assertEquals(column.valueIn(snapshot), cellValue(row, column));
 		}
+	}
+
+	private Object cellValue(int row, Column column) {
+		return model.getValueAt(row, column.ordinal());
 	}
 
 	protected Matcher<TableModelEvent> anInsertionEvent() {
