@@ -2,6 +2,8 @@ package br.com.alexandreaquiles.auctionsniper;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.swing.SwingUtilities;
 
@@ -25,9 +27,9 @@ public class Main {
 	
 	private final SnipersTableModel snipers = new SnipersTableModel();
 	private MainWindow ui;
-	private Chat notToBeGCD;
+	private Collection<Chat> notToBeGCD = new ArrayList<Chat>();
 	public static final String PRICE_COMMAND_FORMAT = "SOLVersion: 1.1; Event: PRICE; CurrentPrice: %d; Increment: %d; Bidder: %s;";
-	public static final String JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Event: JOIN;";
+	public static final String JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Command: JOIN;";
 	public static final String BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: BID; Price: %d"; 
 	public static final String CLOSE_COMMAND_FORMAT = "SOLVersion: 1.1; Event: CLOSE;";
 	
@@ -46,20 +48,27 @@ public class Main {
 
 	public static void main(String... args) throws Exception {
 		Main main = new Main();
-		main.joinAuction(
-			connection(args[ARG_HOSTNAME], args[ARG_USERNAME], args[ARG_PASSWORD]), 
-			args[ARG_ITEM_ID]);
+		XMPPConnection connection = connection(args[ARG_HOSTNAME], args[ARG_USERNAME], args[ARG_PASSWORD]);
+		main.disconnectWhenUICloses(connection);
+		
+		for (int i = ARG_ITEM_ID; i < args.length; i++) {
+			main.joinAuction(connection, args[i]);
+		}
 	}
 
 	private void joinAuction(XMPPConnection connection, String itemId) throws XMPPException {
-		disconnectWhenUICloses(connection);
 
-		final Chat chat = connection.getChatManager().createChat(auctionId(connection, itemId), null);
-		notToBeGCD = chat;
+		final Chat chat = connection.getChatManager()
+				.createChat(auctionId(connection, itemId), null);
+		notToBeGCD.add(chat);
 
 		Auction auction = new XMPPAuction(chat);
 
-		chat.addMessageListener(new AuctionMessageTranslator(connection.getUser(), new AuctionSniper(itemId, auction, new SwingThreadSniperListener(snipers))));
+		chat.addMessageListener(
+				new AuctionMessageTranslator(
+						connection.getUser(), 
+						new AuctionSniper(itemId, auction, 
+								new SwingThreadSniperListener(snipers))));
 		
 		auction.join();
 	}

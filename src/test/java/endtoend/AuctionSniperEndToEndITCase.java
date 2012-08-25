@@ -1,6 +1,5 @@
 package endtoend;
 
-import org.jivesoftware.smack.XMPPException;
 import org.junit.After;
 import org.junit.Test;
 
