@@ -1,6 +1,5 @@
 package endtoend;
 
-import static br.com.alexandreaquiles.auctionsniper.ui.SnipersTableModel.JOINING;
 import static br.com.alexandreaquiles.auctionsniper.ui.SnipersTableModel.textFor;
 import br.com.alexandreaquiles.auctionsniper.Main;
 import br.com.alexandreaquiles.auctionsniper.SniperState;
@@ -36,7 +35,7 @@ public class ApplicationRunner {
 		driver.hasColumnTitles();
 		
 		for (FakeAuctionServer auction : auctions) {
-			driver.showsSniperStatus(JOINING.itemId, JOINING.lastPrice, JOINING.lastBid, textFor(SniperState.JOINING));
+			driver.showsSniperStatus(auction.getItemId(), 0, 0, textFor(SniperState.JOINING));
 		}
 		
 	}

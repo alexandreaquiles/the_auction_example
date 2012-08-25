@@ -2,6 +2,7 @@ package br.com.alexandreaquiles.auctionsniper;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -43,7 +44,6 @@ public class Main {
 				ui = new MainWindow(snipers);
 			}
 		});
-		
 	}
 
 	public static void main(String... args) throws Exception {
@@ -56,8 +56,10 @@ public class Main {
 		}
 	}
 
-	private void joinAuction(XMPPConnection connection, String itemId) throws XMPPException {
+	private void joinAuction(XMPPConnection connection, String itemId) throws Exception {
 
+		safelyAddItemModel(itemId);
+		
 		final Chat chat = connection.getChatManager()
 				.createChat(auctionId(connection, itemId), null);
 		notToBeGCD.add(chat);
@@ -71,6 +73,14 @@ public class Main {
 								new SwingThreadSniperListener(snipers))));
 		
 		auction.join();
+	}
+
+	private void safelyAddItemModel(final String itemId) throws Exception {
+		SwingUtilities.invokeAndWait(new Runnable() {
+			public void run() {
+				snipers.addSniper(SniperSnapshot.joining(itemId));
+			}
+		});
 	}
 
 	private void disconnectWhenUICloses(final XMPPConnection connection) {
