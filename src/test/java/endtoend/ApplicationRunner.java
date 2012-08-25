@@ -27,16 +27,13 @@ public class ApplicationRunner {
 
 	private void startSniper(final FakeAuctionServer... auctions) {
 		Thread thread = new Thread("Test Application"){
-
-			@Override
 			public void run() {
 				try {
-					Main.main(arguments(auctions));
+					Main.main(arguments());
 				} catch(Exception e){
 					e.printStackTrace();
 				}
 			}
-
 		};
 		thread.setDaemon(true);
 		thread.start();
@@ -46,14 +43,11 @@ public class ApplicationRunner {
 		driver.hasColumnTitles();
 	}
 
-	private String[] arguments(FakeAuctionServer[] auctions) {
-		String[] arguments = new String[auctions.length + 3];
+	private String[] arguments() {
+		String[] arguments = new String[3];
 		arguments[0] = FakeAuctionServer.XMPP_HOSTNAME; 
 		arguments[1] = SNIPER_ID; 
 		arguments[2] = SNIPER_PASSWORD;
-		for(int i = 0; i < auctions.length; i++){
-			arguments[i + 3] = auctions[i].getItemId();
-		}
 		return arguments;
 	}
 
