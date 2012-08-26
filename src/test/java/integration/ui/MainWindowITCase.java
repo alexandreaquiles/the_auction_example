@@ -31,7 +31,7 @@ public class MainWindowITCase {
 			}
 		);
 		
-		driver.startBiddingFor("item-id", Integer.MAX_VALUE);
+		driver.startBiddingFor("item-id", 123);
 		driver.check(buttonProbe);
 		
 	}

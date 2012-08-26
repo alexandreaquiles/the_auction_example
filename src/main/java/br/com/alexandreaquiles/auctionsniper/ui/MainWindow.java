@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -55,11 +56,22 @@ public class MainWindow extends JFrame {
 	private JPanel makeControls() {
 		JPanel controls = new JPanel(new FlowLayout());
 		
+		final JLabel itemIdLabel = new JLabel("Item:");
+		controls.add(itemIdLabel);
+		
 		final JTextField itemIdField = new JTextField();
 		itemIdField.setColumns(25);
 		itemIdField.setName(NEW_ITEM_ID_NAME);
 		controls.add(itemIdField);
-		
+
+		final JLabel stopPriceLabel = new JLabel("Stop price:");
+		controls.add(stopPriceLabel);
+
+		final JTextField stopPriceField = new JTextField();
+		stopPriceField.setColumns(25);
+		stopPriceField.setName(NEW_ITEM_STOP_PRICE_NAME);
+		controls.add(stopPriceField);
+
 		final JButton joinAuctionButton = new JButton("Join Auction");
 		joinAuctionButton.setName(JOIN_BUTTON_NAME);
 		joinAuctionButton.addActionListener(new ActionListener() {
