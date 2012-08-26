@@ -15,15 +15,19 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 
-import br.com.alexandreaquiles.auctionsniper.Main;
+import br.com.alexandreaquiles.auctionsniper.xmpp.XMPPAuction;
 
 public class FakeAuctionServer {
+	
+	private static final String PRICE_COMMAND_FORMAT = "SOLVersion: 1.1; Event: PRICE; CurrentPrice: %d; Increment: %d; Bidder: %s;";
+	private static final String CLOSE_COMMAND_FORMAT = "SOLVersion: 1.1; Event: CLOSE;";
+
 	
 	public static final String XMPP_HOSTNAME = "localhost";
 	public static final String AUCTION_RESOURCE = "Auction";
 
-	private static final String ITEM_ID_AS_LOGIN = "auction-%s";
-	private static final String AUCTION_PASSWORD = "auction";
+	public static final String ITEM_ID_AS_LOGIN = "auction-%s";
+	public static final String AUCTION_PASSWORD = "auction";
 
 	private final SingleMessageListener messageListener = new SingleMessageListener();
 	
@@ -52,11 +56,11 @@ public class FakeAuctionServer {
 	}
 
 	public void hasReceivedJoinRequestFrom(String sniperXmppId) throws InterruptedException {
-		receivesAMessageMatching(sniperXmppId, equalTo(Main.JOIN_COMMAND_FORMAT));
+		receivesAMessageMatching(sniperXmppId, equalTo(XMPPAuction.JOIN_COMMAND_FORMAT));
 	}
 
 	public void announceClosed() throws XMPPException {
-		currentChat.sendMessage(Main.CLOSE_COMMAND_FORMAT);
+		currentChat.sendMessage(CLOSE_COMMAND_FORMAT);
 	}
 
 	public void stop() {
@@ -68,11 +72,11 @@ public class FakeAuctionServer {
 	}
 
 	public void reportPrice(int price, int increment, String bidder) throws XMPPException {
-		currentChat.sendMessage(String.format(Main.PRICE_COMMAND_FORMAT, price, increment, bidder));
+		currentChat.sendMessage(String.format(PRICE_COMMAND_FORMAT, price, increment, bidder));
 	}
 
 	public void hasReceivedBid(int bid, String sniperXmppId) throws InterruptedException {
-		receivesAMessageMatching(sniperXmppId, equalTo(String.format(Main.BID_COMMAND_FORMAT, bid)));
+		receivesAMessageMatching(sniperXmppId, equalTo(String.format(XMPPAuction.BID_COMMAND_FORMAT, bid)));
 	}
 	
 	private void receivesAMessageMatching(String sniperXmppId, Matcher<String> messageMatcher) throws InterruptedException {

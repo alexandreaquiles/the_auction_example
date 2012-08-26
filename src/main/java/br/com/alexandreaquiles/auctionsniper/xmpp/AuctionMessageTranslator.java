@@ -1,4 +1,4 @@
-package br.com.alexandreaquiles.auctionsniper;
+package br.com.alexandreaquiles.auctionsniper.xmpp;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +7,7 @@ import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.packet.Message;
 
+import br.com.alexandreaquiles.auctionsniper.AuctionEventListener;
 import br.com.alexandreaquiles.auctionsniper.AuctionEventListener.PriceSource;
 
 public class AuctionMessageTranslator implements MessageListener {

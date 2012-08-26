@@ -1,4 +1,4 @@
-package br.com.alexandreaquiles.auctionsniper;
+package br.com.alexandreaquiles.auctionsniper.util;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;

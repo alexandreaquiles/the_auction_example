@@ -13,7 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import br.com.alexandreaquiles.auctionsniper.Announcer;
+import br.com.alexandreaquiles.auctionsniper.util.Announcer;
 
 public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 1L;

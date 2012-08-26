@@ -1,4 +1,4 @@
-package br.com.alexandreaquiles.auctionsniper;
+package br.com.alexandreaquiles.auctionsniper.util;
 
 public class Defect extends RuntimeException {
 

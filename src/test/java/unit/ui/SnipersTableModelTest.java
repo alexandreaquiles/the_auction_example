@@ -1,4 +1,4 @@
-package unit;
+package unit.ui;
 
 import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.Matchers.allOf;
@@ -17,10 +17,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import br.com.alexandreaquiles.auctionsniper.Defect;
 import br.com.alexandreaquiles.auctionsniper.SniperSnapshot;
 import br.com.alexandreaquiles.auctionsniper.ui.Column;
 import br.com.alexandreaquiles.auctionsniper.ui.SnipersTableModel;
+import br.com.alexandreaquiles.auctionsniper.util.Defect;
 
 @RunWith(JMock.class)
 public class SnipersTableModelTest {

@@ -1,5 +1,7 @@
 package br.com.alexandreaquiles.auctionsniper;
 
+import br.com.alexandreaquiles.auctionsniper.util.Defect;
+
 public enum SniperState {
 	JOINING {
 		public SniperState whenAuctionClosed() { return LOST; }

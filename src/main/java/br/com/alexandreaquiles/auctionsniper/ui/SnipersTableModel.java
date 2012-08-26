@@ -5,10 +5,10 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import br.com.alexandreaquiles.auctionsniper.Defect;
 import br.com.alexandreaquiles.auctionsniper.SniperListener;
 import br.com.alexandreaquiles.auctionsniper.SniperSnapshot;
 import br.com.alexandreaquiles.auctionsniper.SniperState;
+import br.com.alexandreaquiles.auctionsniper.util.Defect;
 
 
 public class SnipersTableModel extends AbstractTableModel implements SniperListener {

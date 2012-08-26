@@ -1,4 +1,4 @@
-package integration;
+package integration.ui;
 
 import static org.hamcrest.Matchers.equalTo;
 
