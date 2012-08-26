@@ -12,6 +12,9 @@ public enum SniperState {
 	WINNING{
 		public SniperState whenAuctionClosed() { return WON; }
 	},
+	LOSING{
+		public SniperState whenAuctionClosed() { return LOST; }
+	},
 	LOST,
 	WON;
 

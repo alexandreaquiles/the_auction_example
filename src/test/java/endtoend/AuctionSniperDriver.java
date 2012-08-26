@@ -44,17 +44,18 @@ public class AuctionSniperDriver extends JFrameDriver {
 		
 	}
 
-	public void startBiddingFor(String itemId) {
-		itemIdField().replaceAllText(itemId); 
+	public void startBiddingFor(String itemId, int stopPrice) {
+		textField(MainWindow.NEW_ITEM_ID_NAME).replaceAllText(itemId); 
+		textField(MainWindow.NEW_ITEM_STOP_PRICE_NAME).replaceAllText(String.valueOf(stopPrice)); 
 		bidButton().click();
 	}
 	
-	private JTextFieldDriver itemIdField(){
-		JTextFieldDriver itemIdField = new JTextFieldDriver(this, JTextField.class, named(MainWindow.NEW_ITEM_ID_NAME));
+	private JTextFieldDriver textField(String name){
+		JTextFieldDriver textField = new JTextFieldDriver(this, JTextField.class, named(name));
 		//We have to focus 2 times to avoid bug in WindowLicker
-		itemIdField.focusWithMouse();
-		itemIdField.focusWithMouse();
-		return itemIdField;
+		textField.focusWithMouse();
+		textField.focusWithMouse();
+		return textField;
 	}
 	
 	private JButtonDriver bidButton(){

@@ -16,7 +16,7 @@ import br.com.alexandreaquiles.auctionsniper.util.Defect;
 public class SnipersTableModel extends AbstractTableModel implements SniperListener, PortfolioListener {
 
 	private static final long serialVersionUID = 1L;
-	private final static String[] STATUS_TEXT = { "Joining", "Bidding", "Winning", "Lost", "Won" };
+	private final static String[] STATUS_TEXT = { "Joining", "Bidding", "Winning", "Losing", "Lost", "Won" };
 
 	private final List<SniperSnapshot> snapshots = new ArrayList<SniperSnapshot>();
 
