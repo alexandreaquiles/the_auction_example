@@ -5,18 +5,21 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import br.com.alexandreaquiles.auctionsniper.AuctionSniper;
+import br.com.alexandreaquiles.auctionsniper.SniperCollector;
 import br.com.alexandreaquiles.auctionsniper.SniperListener;
 import br.com.alexandreaquiles.auctionsniper.SniperSnapshot;
 import br.com.alexandreaquiles.auctionsniper.SniperState;
 import br.com.alexandreaquiles.auctionsniper.util.Defect;
 
 
-public class SnipersTableModel extends AbstractTableModel implements SniperListener {
+public class SnipersTableModel extends AbstractTableModel implements SniperListener, SniperCollector {
 
 	private static final long serialVersionUID = 1L;
 	private final static String[] STATUS_TEXT = { "Joining", "Bidding", "Winning", "Lost", "Won" };
 
-	private List<SniperSnapshot> snapshots = new ArrayList<SniperSnapshot>();
+	private final List<AuctionSniper> notToBeGCD = new ArrayList<AuctionSniper>();
+	private final List<SniperSnapshot> snapshots = new ArrayList<SniperSnapshot>();
 
 	public int getRowCount() {
 		return snapshots.size();
@@ -49,10 +52,16 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
 		return STATUS_TEXT[state.ordinal()];
 	}
 
-	public void addSniper(SniperSnapshot joiningSniper) {
+	public void addSniperSnapshot(SniperSnapshot joiningSniper) {
 		int row = snapshots.size();
 		snapshots.add(joiningSniper);
 		fireTableRowsInserted(row, row);
+	}
+
+	public void addSniper(AuctionSniper sniper) {
+		notToBeGCD.add(sniper);
+		addSniperSnapshot(sniper.getSnapshot());
+		sniper.addSniperListener(new SwingThreadSniperListener(this));
 	}
 
 }

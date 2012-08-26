@@ -1,14 +1,15 @@
 package br.com.alexandreaquiles.auctionsniper;
 
+import br.com.alexandreaquiles.auctionsniper.util.Announcer;
+
 public class AuctionSniper implements AuctionEventListener {
 
-	private SniperListener sniperListener;
 	private Auction auction;
 	private SniperSnapshot snapshot;
+	private Announcer<SniperListener> listeners = Announcer.to(SniperListener.class);
 
-	public AuctionSniper(String itemId, Auction auction, SniperListener sniperListener) {
+	public AuctionSniper(String itemId, Auction auction) {
 		this.auction = auction;
-		this.sniperListener = sniperListener;
 		this.snapshot = SniperSnapshot.joining(itemId);
 	}
 
@@ -32,7 +33,15 @@ public class AuctionSniper implements AuctionEventListener {
 	}
 
 	private void notifyChange() {
-		sniperListener.sniperStateChanged(snapshot);
+		listeners.announce().sniperStateChanged(snapshot);
+	}
+
+	public SniperSnapshot getSnapshot() {
+		return snapshot;
+	}
+
+	public void addSniperListener(SniperListener sniperListener) {
+		listeners.addListener(sniperListener);
 	}
 
 }
