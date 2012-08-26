@@ -21,7 +21,15 @@ public class AuctionMessageTranslator implements MessageListener {
 	}
 
 	public void processMessage(Chat chat, Message message) {
-		AuctionEvent event = AuctionEvent.from(message.getBody());
+		try {
+			translate(message.getBody());
+		} catch (Exception e) {
+			listener.auctionFailed();
+		}
+	}
+
+	private void translate(String messageBody) {
+		AuctionEvent event = AuctionEvent.from(messageBody);
 		String eventType = event.type();
 		if("CLOSE".equals(eventType)){
 			listener.auctionClosed();
@@ -58,7 +66,11 @@ public class AuctionMessageTranslator implements MessageListener {
 		}
 
 		private String get(String fieldName) {
-			return fields.get(fieldName);
+			String value = fields.get(fieldName);
+			if(null == value){
+				throw new MissingValueException(fieldName);
+			}
+			return value;
 		}
 		
 		private void addField(String field){
@@ -78,6 +90,13 @@ public class AuctionMessageTranslator implements MessageListener {
 			return messageBody.split(";");
 		}
 		
+	}
+	
+	private static class MissingValueException extends RuntimeException {
+		private static final long serialVersionUID = 1L;
+		public MissingValueException(String fieldName) {
+			super("Missing value for " + fieldName);
+		}
 	}
 
 }
