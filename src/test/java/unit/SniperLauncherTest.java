@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import br.com.alexandreaquiles.auctionsniper.Auction;
 import br.com.alexandreaquiles.auctionsniper.AuctionHouse;
 import br.com.alexandreaquiles.auctionsniper.AuctionSniper;
+import br.com.alexandreaquiles.auctionsniper.Item;
 import br.com.alexandreaquiles.auctionsniper.SniperCollector;
 import br.com.alexandreaquiles.auctionsniper.SniperLauncher;
 
@@ -30,17 +31,17 @@ public class SniperLauncherTest {
 	
 	@Test
 	public void addsNewSniperToCollectorAndThenJoinsAuction(){
-		final String itemId = "item 123";
+		final Item item = new Item("item 123", 123);
 		context.checking(new Expectations(){{
-			allowing(auctionHouse).auctionFor(itemId);
+			allowing(auctionHouse).auctionFor(item);
 								will(returnValue(auction));
-			oneOf(auction).addAuctionEventListeners(with(sniperForItem(itemId)));
+			oneOf(auction).addAuctionEventListeners(with(sniperForItem(item.identifier)));
 							when(auctionState.is("not joined"));
-			oneOf(sniperCollector).addSniper(with(sniperForItem(itemId)));
+			oneOf(sniperCollector).addSniper(with(sniperForItem(item.identifier)));
 							when(auctionState.is("not joined"));
 			one(auction).join(); then(auctionState.is("joined"));
 		}});
-		launcher.joinAuction(itemId);
+		launcher.joinAuction(item);
 	}
 
 	protected Matcher<AuctionSniper>sniperForItem(String itemId) {

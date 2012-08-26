@@ -15,20 +15,21 @@ import org.junit.runner.RunWith;
 import br.com.alexandreaquiles.auctionsniper.Auction;
 import br.com.alexandreaquiles.auctionsniper.AuctionEventListener.PriceSource;
 import br.com.alexandreaquiles.auctionsniper.AuctionSniper;
+import br.com.alexandreaquiles.auctionsniper.Item;
 import br.com.alexandreaquiles.auctionsniper.SniperListener;
 import br.com.alexandreaquiles.auctionsniper.SniperSnapshot;
 import br.com.alexandreaquiles.auctionsniper.SniperState;
 
 @RunWith(JMock.class)
 public class AuctionSniperTest {
-	private static final String ITEM_ID = "item-id";
+	private static final Item ITEM = new Item("item-id", 123);
 	
 	private final Mockery context = new Mockery();
 	private final States sniperState = context.states("sniper");
 	
 	private final Auction auction = context.mock(Auction.class);
 	private final SniperListener sniperListener = context.mock(SniperListener.class);
-	private final AuctionSniper sniper = new AuctionSniper(ITEM_ID, auction);
+	private final AuctionSniper sniper = new AuctionSniper(ITEM, auction);
 	
 	@Before public void attachListener() {
 		sniper.addSniperListener(sniperListener);
@@ -79,7 +80,7 @@ public class AuctionSniperTest {
 		context.checking(new Expectations(){{
 			int bid = price + increment;
 			one(auction).bid(bid);
-			atLeast(1).of(sniperListener).sniperStateChanged(new SniperSnapshot(ITEM_ID, price, bid, SniperState.BIDDING));
+			atLeast(1).of(sniperListener).sniperStateChanged(new SniperSnapshot(ITEM.identifier, price, bid, SniperState.BIDDING));
 		}});
 		
 		sniper.currentPrice(price, increment, PriceSource.FromOtherBidder);
@@ -91,7 +92,7 @@ public class AuctionSniperTest {
 			ignoring(auction);
 			allowing(sniperListener).sniperStateChanged(with(aSniperThatIs(SniperState.BIDDING)));
 									then(sniperState.is("bidding"));
-			atLeast(1).of(sniperListener).sniperStateChanged(new SniperSnapshot(ITEM_ID, 135, 135, SniperState.WINNING));
+			atLeast(1).of(sniperListener).sniperStateChanged(new SniperSnapshot(ITEM.identifier, 135, 135, SniperState.WINNING));
 									when(sniperState.is("bidding"));
 		}});
 		

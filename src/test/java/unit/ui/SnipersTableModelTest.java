@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import br.com.alexandreaquiles.auctionsniper.Item;
 import br.com.alexandreaquiles.auctionsniper.SniperSnapshot;
 import br.com.alexandreaquiles.auctionsniper.ui.Column;
 import br.com.alexandreaquiles.auctionsniper.ui.SnipersTableModel;
@@ -40,7 +41,7 @@ public class SnipersTableModelTest {
 	
 	@Test
 	public void setsSniperValuesInColumns(){
-		SniperSnapshot joining = SniperSnapshot.joining("item-id");
+		SniperSnapshot joining = SniperSnapshot.joining(new Item("item-id", 123));
 		SniperSnapshot bidding = joining.bidding(555, 666);
 		context.checking(new Expectations(){{
 			allowing(listener).tableChanged(with(anInsertionEvent()));
@@ -62,7 +63,7 @@ public class SnipersTableModelTest {
 	
 	@Test 
 	public void notifiesListenersWhenAddingASniper(){
-		SniperSnapshot joining = SniperSnapshot.joining("item-id");
+		SniperSnapshot joining = SniperSnapshot.joining(new Item("item-id", 123));
 		context.checking(new Expectations(){{
 			one(listener).tableChanged(with(anInsertionAtRow(0)));
 		}});
@@ -81,8 +82,8 @@ public class SnipersTableModelTest {
 			ignoring(listener);
 		}});
 		
-		model.addSniperSnapshot(SniperSnapshot.joining("item 0"));
-		model.addSniperSnapshot(SniperSnapshot.joining("item 1"));
+		model.addSniperSnapshot(SniperSnapshot.joining(new Item("item 0", 123)));
+		model.addSniperSnapshot(SniperSnapshot.joining(new Item("item 1", 345)));
 		
 		assertEquals("item 0", cellValue(0, Column.ITEM_IDENTIFIER));
 		assertEquals("item 1", cellValue(1, Column.ITEM_IDENTIFIER));
@@ -95,9 +96,9 @@ public class SnipersTableModelTest {
 			ignoring(listener);
 		}});
 		
-		SniperSnapshot joiningItem0 = SniperSnapshot.joining("item 0");
+		SniperSnapshot joiningItem0 = SniperSnapshot.joining(new Item("item 0", 123));
 		model.addSniperSnapshot(joiningItem0);
-		SniperSnapshot joiningItem1 = SniperSnapshot.joining("item 1");
+		SniperSnapshot joiningItem1 = SniperSnapshot.joining(new Item("item 1", 345));
 		model.addSniperSnapshot(joiningItem1);
 		
 		SniperSnapshot biddingItem0 = joiningItem0.bidding(555, 666);
@@ -110,7 +111,7 @@ public class SnipersTableModelTest {
 
 	@Test(expected=Defect.class)
 	public void throwsDefectIfNoExistingSniperForAnUpdate(){
-		model.sniperStateChanged(SniperSnapshot.joining("item 2").winning(555));
+		model.sniperStateChanged(SniperSnapshot.joining(new Item("item x", 123)).winning(555));
 	}
 
 	private void assertRowMatchesSnapshot(int row, SniperSnapshot snapshot) {

@@ -12,14 +12,15 @@ import org.junit.Test;
 import br.com.alexandreaquiles.auctionsniper.Auction;
 import br.com.alexandreaquiles.auctionsniper.AuctionEventListener;
 import br.com.alexandreaquiles.auctionsniper.AuctionHouse;
+import br.com.alexandreaquiles.auctionsniper.Item;
 import br.com.alexandreaquiles.auctionsniper.xmpp.XMPPAuctionHouse;
 import endtoend.ApplicationRunner;
 import endtoend.FakeAuctionServer;
 
 public class XMPPAuctionITCase {
 
-	private static final String ITEM_ID = "item-54321";
-	private FakeAuctionServer auctionServer = new FakeAuctionServer(ITEM_ID);
+	private static final Item ITEM = new Item("item-54321", 123);
+	private FakeAuctionServer auctionServer = new FakeAuctionServer(ITEM.identifier);
 	private AuctionHouse auctionHouse;
 
 	@Before
@@ -36,7 +37,7 @@ public class XMPPAuctionITCase {
 	public void receivesEventsFromAuctionServerAfterJoining() throws Exception{
 		CountDownLatch auctionWasClosed = new CountDownLatch(1);
 		
-		Auction auction = auctionHouse.auctionFor(ITEM_ID); 
+		Auction auction = auctionHouse.auctionFor(ITEM); 
 		auction.addAuctionEventListeners(auctionClosedListener(auctionWasClosed));
 		
 		auction.join();

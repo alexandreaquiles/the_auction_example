@@ -48,8 +48,8 @@ public class SniperSnapshot {
 				+ ", lastBid=" + lastBid + "]";
 	}
 
-	public static SniperSnapshot joining(String itemId) {
-		return new SniperSnapshot(itemId, 0, 0, SniperState.JOINING);
+	public static SniperSnapshot joining(Item item) {
+		return new SniperSnapshot(item.identifier, 0, 0, SniperState.JOINING);
 	}
 
 	public SniperSnapshot bidding(int newLastPrice, int newLastBid) {
