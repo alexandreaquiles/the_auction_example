@@ -2,6 +2,8 @@ package br.com.alexandreaquiles.auctionsniper.ui;
 
 import java.util.EventListener;
 
+import br.com.alexandreaquiles.auctionsniper.Item;
+
 public interface UserRequestListener extends EventListener {
-	void joinAuction(String itemId);
+	void joinAuction(Item item);
 }

@@ -5,8 +5,10 @@ import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
 
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -14,6 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import br.com.alexandreaquiles.auctionsniper.Item;
 import br.com.alexandreaquiles.auctionsniper.SniperPortifolio;
 import br.com.alexandreaquiles.auctionsniper.util.Announcer;
 
@@ -67,8 +70,8 @@ public class MainWindow extends JFrame {
 		final JLabel stopPriceLabel = new JLabel("Stop price:");
 		controls.add(stopPriceLabel);
 
-		final JTextField stopPriceField = new JTextField();
-		stopPriceField.setColumns(25);
+		final JFormattedTextField stopPriceField = new JFormattedTextField(NumberFormat.getIntegerInstance());
+		stopPriceField.setColumns(7);
 		stopPriceField.setName(NEW_ITEM_STOP_PRICE_NAME);
 		controls.add(stopPriceField);
 
@@ -76,7 +79,15 @@ public class MainWindow extends JFrame {
 		joinAuctionButton.setName(JOIN_BUTTON_NAME);
 		joinAuctionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				userRequests.announce().joinAuction(itemIdField.getText());
+				userRequests.announce().joinAuction(new Item(itemId(), stopPrice()));
+			}
+
+			private String itemId() {
+				return itemIdField.getText();
+			}
+
+			private int stopPrice() {
+				return ((Number) stopPriceField.getValue()).intValue();
 			}
 		});
 		controls.add(joinAuctionButton);
