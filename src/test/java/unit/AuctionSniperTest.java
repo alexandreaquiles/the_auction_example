@@ -112,6 +112,51 @@ public class AuctionSniperTest {
 		sniper.currentPrice(2345, 25, PriceSource.FromOtherBidder);
 	}
 	
+	@Test
+	public void doesNotBidAndReportsLosingIfFirstPriceIsAboveStopPrice(){
+		context.checking(new Expectations(){{
+			ignoring(auction);
+			atLeast(1).of(sniperListener).sniperStateChanged(new SniperSnapshot(ITEM.identifier, 2345, 0, SniperState.LOSING));
+		}});
+		sniper.currentPrice(2345, 25, PriceSource.FromOtherBidder);
+	}
+	
+	@Test
+	public void reportsLostIfAuctionClosedWhenLosing(){
+		context.checking(new Expectations(){{
+			ignoring(auction);
+			allowing(sniperListener).sniperStateChanged(with(aSniperThatIs(SniperState.LOSING)));
+									then(sniperState.is("losing"));
+			atLeast(1).of(sniperListener).sniperStateChanged(with(aSniperThatIs(SniperState.LOST)));
+									when(sniperState.is("losing"));
+		}});
+		sniper.currentPrice(2345, 25, PriceSource.FromOtherBidder);
+		sniper.auctionClosed();
+	}
+	
+	@Test
+	public void continuesToBeLosingOnceStopPriceHasBeenReached(){
+		context.checking(new Expectations(){{
+			ignoring(auction);
+			atLeast(2).of(sniperListener).sniperStateChanged(with(aSniperThatIs(SniperState.LOSING)));
+		}});
+		sniper.currentPrice(2345, 25, PriceSource.FromOtherBidder);
+		sniper.currentPrice(2370, 20, PriceSource.FromOtherBidder);
+	}
+	
+	@Test
+	public void doesNotBidAndReportsLosingIfPriceAfterWinningIsAboveStopPrice(){
+		context.checking(new Expectations(){{
+			ignoring(auction);
+			allowing(sniperListener).sniperStateChanged(with(aSniperThatIs(SniperState.WINNING)));
+									then(sniperState.is("winning"));
+			atLeast(1).of(sniperListener).sniperStateChanged(with(aSniperThatIs(SniperState.LOSING)));
+									when(sniperState.is("winning"));
+		}});
+		sniper.currentPrice(135, 45, PriceSource.FromSniper);
+		sniper.currentPrice(2345, 25, PriceSource.FromOtherBidder);
+	}
+	
 	private Matcher<SniperSnapshot> aSniperThatIs(SniperState state) {
 		return new FeatureMatcher<SniperSnapshot, SniperState>(equalTo(state), "sniper that is", "was") {
 			protected SniperState featureValueOf(SniperSnapshot actual) {
