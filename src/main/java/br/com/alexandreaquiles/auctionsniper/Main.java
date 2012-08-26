@@ -16,7 +16,7 @@ public class Main {
 	private static final int ARG_PASSWORD = 2;
 	
 	private MainWindow ui;
-	private final SnipersTableModel snipers = new SnipersTableModel();
+	private final SniperPortifolio portifolio = new SniperPortifolio();
 	
 	public Main() throws Exception {
 		startUserInterface();
@@ -25,7 +25,7 @@ public class Main {
 	private void startUserInterface() throws Exception {
 		SwingUtilities.invokeAndWait(new Runnable() {
 			public void run() {
-				ui = new MainWindow(snipers);
+				ui = new MainWindow(portifolio);
 			}
 		});
 	}
@@ -39,7 +39,7 @@ public class Main {
 
 	private void addUserRequestListenerFor(final AuctionHouse auctionHouse) {
 		ui.addUserRequestListener( 
-			new SniperLauncher(auctionHouse, snipers)
+			new SniperLauncher(auctionHouse, portifolio)
 		);
 	}
 

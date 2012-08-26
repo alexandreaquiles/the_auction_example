@@ -4,17 +4,18 @@ import static org.hamcrest.Matchers.equalTo;
 
 import org.junit.Test;
 
+import br.com.alexandreaquiles.auctionsniper.SniperPortifolio;
+import br.com.alexandreaquiles.auctionsniper.ui.MainWindow;
+import br.com.alexandreaquiles.auctionsniper.ui.UserRequestListener;
+
 import com.objogate.wl.swing.probe.ValueMatcherProbe;
 
-import br.com.alexandreaquiles.auctionsniper.ui.MainWindow;
-import br.com.alexandreaquiles.auctionsniper.ui.SnipersTableModel;
-import br.com.alexandreaquiles.auctionsniper.ui.UserRequestListener;
 import endtoend.AuctionSniperDriver;
 
 public class MainWindowITCase {
 
-	private final SnipersTableModel tableModel = new SnipersTableModel();
-	private final MainWindow mainWindow = new MainWindow(tableModel);
+	private final SniperPortifolio sniperPortifolio = new SniperPortifolio();
+	private final MainWindow mainWindow = new MainWindow(sniperPortifolio);
 	private final AuctionSniperDriver driver = new AuctionSniperDriver(100);
 	
 	@Test

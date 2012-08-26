@@ -6,19 +6,18 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import br.com.alexandreaquiles.auctionsniper.AuctionSniper;
-import br.com.alexandreaquiles.auctionsniper.SniperCollector;
+import br.com.alexandreaquiles.auctionsniper.PortfolioListener;
 import br.com.alexandreaquiles.auctionsniper.SniperListener;
 import br.com.alexandreaquiles.auctionsniper.SniperSnapshot;
 import br.com.alexandreaquiles.auctionsniper.SniperState;
 import br.com.alexandreaquiles.auctionsniper.util.Defect;
 
 
-public class SnipersTableModel extends AbstractTableModel implements SniperListener, SniperCollector {
+public class SnipersTableModel extends AbstractTableModel implements SniperListener, PortfolioListener {
 
 	private static final long serialVersionUID = 1L;
 	private final static String[] STATUS_TEXT = { "Joining", "Bidding", "Winning", "Lost", "Won" };
 
-	private final List<AuctionSniper> notToBeGCD = new ArrayList<AuctionSniper>();
 	private final List<SniperSnapshot> snapshots = new ArrayList<SniperSnapshot>();
 
 	public int getRowCount() {
@@ -58,8 +57,7 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
 		fireTableRowsInserted(row, row);
 	}
 
-	public void addSniper(AuctionSniper sniper) {
-		notToBeGCD.add(sniper);
+	public void sniperAdded(AuctionSniper sniper) {
 		addSniperSnapshot(sniper.getSnapshot());
 		sniper.addSniperListener(new SwingThreadSniperListener(this));
 	}
