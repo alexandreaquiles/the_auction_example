@@ -22,7 +22,7 @@ import br.com.alexandreaquiles.auctionsniper.SniperState;
 
 @RunWith(JMock.class)
 public class AuctionSniperTest {
-	private static final Item ITEM = new Item("item-id", 123);
+	private static final Item ITEM = new Item("item-id", 1234);
 	
 	private final Mockery context = new Mockery();
 	private final States sniperState = context.states("sniper");
@@ -100,6 +100,18 @@ public class AuctionSniperTest {
 		sniper.currentPrice(135, 45, PriceSource.FromSniper);
 	}
 	
+	@Test
+	public void doesNotBidAndReportsLosingIfSubsequentPriceIsAboveStopPrice(){
+		allowingSniperBidding();
+		context.checking(new Expectations(){{
+			int bid = 123 + 45;
+			allowing(auction).bid(bid);
+			atLeast(1).of(sniperListener).sniperStateChanged(new SniperSnapshot(ITEM.identifier, 2345, bid, SniperState.LOSING));
+		}});
+		sniper.currentPrice(123, 45, PriceSource.FromOtherBidder);
+		sniper.currentPrice(2345, 25, PriceSource.FromOtherBidder);
+	}
+	
 	private Matcher<SniperSnapshot> aSniperThatIs(SniperState state) {
 		return new FeatureMatcher<SniperSnapshot, SniperState>(equalTo(state), "sniper that is", "was") {
 			protected SniperState featureValueOf(SniperSnapshot actual) {
@@ -107,4 +119,12 @@ public class AuctionSniperTest {
 			}
 		};
 	}
+	
+	private void allowingSniperBidding() {
+		context.checking(new Expectations(){{
+			allowing(sniperListener).sniperStateChanged(with(aSniperThatIs(SniperState.BIDDING)));
+									then(sniperState.is("bidding"));
+		}});
+	}
+
 }

@@ -4,11 +4,13 @@ import br.com.alexandreaquiles.auctionsniper.util.Announcer;
 
 public class AuctionSniper implements AuctionEventListener {
 
-	private Auction auction;
+	private final Item item;
+	private final Auction auction;
+	private final Announcer<SniperListener> listeners = Announcer.to(SniperListener.class);
 	private SniperSnapshot snapshot;
-	private Announcer<SniperListener> listeners = Announcer.to(SniperListener.class);
 
 	public AuctionSniper(Item item, Auction auction) {
+		this.item = item;
 		this.auction = auction;
 		this.snapshot = SniperSnapshot.joining(item);
 	}
@@ -25,8 +27,12 @@ public class AuctionSniper implements AuctionEventListener {
 			break;
 		case FromOtherBidder:
 			int bid = price + increment;
-			auction.bid(bid);
-			snapshot = snapshot.bidding(price, bid);
+			if(item.allowsBid(bid)){
+				auction.bid(bid);
+				snapshot = snapshot.bidding(price, bid);
+			} else {
+				snapshot = snapshot.losing(price);
+			}
 			break;
 		}
 		notifyChange();

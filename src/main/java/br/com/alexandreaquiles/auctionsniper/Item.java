@@ -44,5 +44,9 @@ public class Item {
 		return "Item [identifier=" + identifier + ", stopPrice=" + stopPrice
 				+ "]";
 	}
+
+	public boolean allowsBid(int bid) {
+		return bid <= stopPrice;
+	}
 	
 }
