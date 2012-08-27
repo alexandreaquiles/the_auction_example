@@ -1,6 +1,7 @@
 package endtoend;
 
 import static br.com.alexandreaquiles.auctionsniper.ui.SnipersTableModel.textFor;
+import static org.hamcrest.Matchers.containsString;
 import br.com.alexandreaquiles.auctionsniper.Main;
 import br.com.alexandreaquiles.auctionsniper.SniperState;
 import br.com.alexandreaquiles.auctionsniper.ui.MainWindow;
@@ -11,7 +12,8 @@ public class ApplicationRunner {
 	public static final String SNIPER_ID = "sniper";
 	public static final String SNIPER_PASSWORD = "sniper";
 	public static final String SNIPER_XMPP_ID = SNIPER_ID + "@" + FakeAuctionServer.XMPP_HOSTNAME + "/" + FakeAuctionServer.AUCTION_RESOURCE;
-	
+
+	private AuctionLogDriver logDriver = new AuctionLogDriver();
 	private AuctionSniperDriver driver;
 
 	public void startBiddingIn(final FakeAuctionServer... auctions) {
@@ -26,6 +28,7 @@ public class ApplicationRunner {
 	}
 
 	private void startSniper() {
+		logDriver.clearLog();
 		Thread thread = new Thread("Test Application"){
 			public void run() {
 				try {
@@ -88,7 +91,8 @@ public class ApplicationRunner {
 		driver.showsSniperStatus(itemId, 0, 0, textFor(SniperState.JOINING));
 	}
 
-	public void reportsInvalidMessage(FakeAuctionServer auction, String brokenMessage) {
+	public void reportsInvalidMessage(FakeAuctionServer auction, String brokenMessage) throws Exception {
+		logDriver.hasEntry(containsString(brokenMessage));
 	}
 
 }
