@@ -136,14 +136,11 @@ public class AuctionSniperTest {
 	
 	@Test
 	public void continuesToBeLosingOnceStopPriceHasBeenReached(){
-		context.checking(new Expectations(){{
-			ignoring(auction);
-			atLeast(2).of(sniperListener).sniperStateChanged(with(aSniperThatIs(SniperState.LOSING)));
-		}});
+		ignoringAuction();
 		sniper.currentPrice(2345, 25, PriceSource.FromOtherBidder);
 		sniper.currentPrice(2370, 20, PriceSource.FromOtherBidder);
 	}
-	
+
 	@Test
 	public void doesNotBidAndReportsLosingIfPriceAfterWinningIsAboveStopPrice(){
 		context.checking(new Expectations(){{
@@ -157,6 +154,17 @@ public class AuctionSniperTest {
 		sniper.currentPrice(2345, 25, PriceSource.FromOtherBidder);
 	}
 	
+	@Test
+	public void reportsFailedIfAuctionFailsWhenBidding(){
+		ignoringAuction();
+		allowingSniperBidding();
+		
+		expectSniperToFailWhenItIs("bidding");
+		
+		sniper.currentPrice(123, 45, PriceSource.FromOtherBidder);
+		sniper.auctionFailed();
+	}
+	
 	private Matcher<SniperSnapshot> aSniperThatIs(SniperState state) {
 		return new FeatureMatcher<SniperSnapshot, SniperState>(equalTo(state), "sniper that is", "was") {
 			protected SniperState featureValueOf(SniperSnapshot actual) {
@@ -164,11 +172,24 @@ public class AuctionSniperTest {
 			}
 		};
 	}
-	
+
+	private void ignoringAuction() {
+		context.checking(new Expectations(){{
+			ignoring(auction);
+		}});
+	}
+
 	private void allowingSniperBidding() {
 		context.checking(new Expectations(){{
 			allowing(sniperListener).sniperStateChanged(with(aSniperThatIs(SniperState.BIDDING)));
 									then(sniperState.is("bidding"));
+		}});
+	}
+
+	private void expectSniperToFailWhenItIs(final String state) {
+		context.checking(new Expectations(){{
+			atLeast(1).of(sniperListener).sniperStateChanged(new SniperSnapshot(ITEM.identifier, 0, 0, SniperState.FAILED));
+									then(sniperState.is(state));
 		}});
 	}
 

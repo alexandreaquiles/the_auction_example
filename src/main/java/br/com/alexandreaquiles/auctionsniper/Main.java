@@ -6,7 +6,6 @@ import java.awt.event.WindowEvent;
 import javax.swing.SwingUtilities;
 
 import br.com.alexandreaquiles.auctionsniper.ui.MainWindow;
-import br.com.alexandreaquiles.auctionsniper.ui.SnipersTableModel;
 import br.com.alexandreaquiles.auctionsniper.xmpp.XMPPAuctionHouse;
 
 public class Main {

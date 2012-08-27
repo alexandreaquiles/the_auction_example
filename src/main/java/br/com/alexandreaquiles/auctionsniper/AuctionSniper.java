@@ -50,4 +50,9 @@ public class AuctionSniper implements AuctionEventListener {
 		listeners.addListener(sniperListener);
 	}
 
+	public void auctionFailed() {
+		snapshot = snapshot.failed();
+		notifyChange();
+	}
+
 }

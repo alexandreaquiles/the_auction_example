@@ -56,6 +56,10 @@ public class XMPPAuctionITCase {
 			public void currentPrice(int price, int increment, PriceSource priceSource) {
 				//not implemented
 			}
+
+			public void auctionFailed() {
+				//not implemented
+			}
 		};
 	}
 	
