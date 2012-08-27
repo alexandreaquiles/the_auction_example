@@ -6,6 +6,7 @@ import org.hamcrest.FeatureMatcher;
 import org.hamcrest.Matcher;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
+import org.jmock.Sequence;
 import org.jmock.States;
 import org.jmock.integration.junit4.JMock;
 import org.junit.Before;
@@ -136,9 +137,17 @@ public class AuctionSniperTest {
 	
 	@Test
 	public void continuesToBeLosingOnceStopPriceHasBeenReached(){
-		ignoringAuction();
-		sniper.currentPrice(2345, 25, PriceSource.FromOtherBidder);
-		sniper.currentPrice(2370, 20, PriceSource.FromOtherBidder);
+	    final Sequence states = context.sequence("sniper states");
+	    final int price1 = 1233;
+	    final int price2 = 1258;
+
+	    context.checking(new Expectations() {{
+	      atLeast(1).of(sniperListener).sniperStateChanged(new SniperSnapshot(ITEM.identifier, price1, 0, SniperState.LOSING)); inSequence(states);
+	      atLeast(1).of(sniperListener).sniperStateChanged(new SniperSnapshot(ITEM.identifier, price2, 0, SniperState.LOSING)); inSequence(states);
+	    }});
+	   
+	    sniper.currentPrice(price1, 25, PriceSource.FromOtherBidder);
+	    sniper.currentPrice(price2, 25, PriceSource.FromOtherBidder);
 	}
 
 	@Test
